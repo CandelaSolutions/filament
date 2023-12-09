@@ -1,4 +1,4 @@
-# filament
+# Filament - A completely redesigned task manager
 
 A new Flutter project.
 
