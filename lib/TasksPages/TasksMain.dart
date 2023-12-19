@@ -11,60 +11,51 @@ class TasksPage extends StatefulWidget {
   State<TasksPage> createState() => _TasksPageState();
 }
 
-Widget page(var selectedIndex) {
-  Widget page;
-  switch (selectedIndex) {
-    case 0:
-      page = TasksOverviewPage();
-    case 1:
-      page = TasksDailyPage();
-    case 2:
-      page = TasksPersonalPage();
-    case 3:
-      page = TasksWorkPage();
-    default:
-      throw UnimplementedError('no widget for $selectedIndex');
-  }
-  return page;
-}
-
 class _TasksPageState extends State<TasksPage> {
   var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = [
+      TasksOverviewPage(),
+      TasksDailyPage(),
+      TasksPersonalPage(),
+      TasksWorkPage(),
+    ];
     if (MediaQuery.of(context).size.width / MediaQuery.of(context).size.height >
         1) {
-      return landscapeScaffold(context);
+      return landscapeScaffold(context, pages);
     } else {
-      return portraitScaffold(context);
+      return portraitScaffold(context, pages);
     }
   }
 
-  Scaffold portraitScaffold(BuildContext context) {
+  Scaffold portraitScaffold(BuildContext context, List<Widget> pages) {
     var theme = Theme.of(context);
     return Scaffold(
-      bottomNavigationBar: navBar(
-        theme,
-        0,
-        selectedIndex,
-        (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        [
-          navBarItem(Icons.home, "Home", theme, 0),
-          navBarItem(Icons.calendar_today, "Calendar", theme, 0),
-          navBarItem(Icons.checklist, "Tasks", theme, 0),
-          navBarItem(Icons.contact_mail, "Messages", theme, 0)
-        ],
-      ),
-      body: page(selectedIndex),
-    );
+        bottomNavigationBar: navBar(
+          theme,
+          1,
+          selectedIndex,
+          (value) {
+            setState(() {
+              selectedIndex = value;
+            });
+          },
+          [
+            navBarItem(Icons.checklist, "Overview", theme, 1),
+            navBarItem(Icons.event_repeat, "Habit Builder", theme, 1),
+            navBarItem(Icons.people, "Personal", theme, 1),
+            navBarItem(Icons.engineering, "Work", theme, 1)
+          ],
+        ),
+        body: IndexedStack(
+          index: selectedIndex,
+          children: pages,
+        ));
   }
 
-  Scaffold landscapeScaffold(BuildContext context) {
+  Scaffold landscapeScaffold(BuildContext context, List<Widget> pages) {
     var theme = Theme.of(context);
     return Scaffold(
       body: Row(
@@ -72,7 +63,7 @@ class _TasksPageState extends State<TasksPage> {
           SafeArea(
               child: navRail(
             theme,
-            0,
+            1,
             selectedIndex,
             (value) {
               setState(() {
@@ -80,15 +71,17 @@ class _TasksPageState extends State<TasksPage> {
               });
             },
             [
-              railDestination(Icons.home, "Home", theme, 0),
-              railDestination(Icons.calendar_today, "Calendar", theme, 0),
-              railDestination(Icons.checklist, "Tasks", theme, 0),
-              railDestination(Icons.contact_mail, "Messages", theme, 0)
+              railDestination(Icons.checklist, "Overview", theme, 1),
+              railDestination(Icons.event_repeat, "Habit Builder", theme, 1),
+              railDestination(Icons.people, "Personal", theme, 1),
+              railDestination(Icons.engineering, "Work", theme, 1),
             ],
           )),
           Expanded(
-            child: page(selectedIndex),
-          ),
+              child: IndexedStack(
+            index: selectedIndex,
+            children: pages,
+          )),
         ],
       ),
     );

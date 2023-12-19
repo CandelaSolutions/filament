@@ -33,23 +33,6 @@ class App extends StatelessWidget {
 
 class AppState extends ChangeNotifier {}
 
-Widget page(var selectedIndex) {
-  Widget page;
-  switch (selectedIndex) {
-    case 0:
-      page = LandingPage();
-    case 1:
-      page = CalendarPage();
-    case 2:
-      page = TasksPage();
-    case 3:
-      page = MessagesPage();
-    default:
-      throw UnimplementedError('no widget for $selectedIndex');
-  }
-  return page;
-}
-
 class ReadyScene extends StatefulWidget {
   @override
   State<ReadyScene> createState() => _ReadySceneState();
@@ -59,41 +42,46 @@ class _ReadySceneState extends State<ReadyScene> {
   var selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final backgroundShade = theme.colorScheme.background;
-
+    List<Widget> pages = [
+      LandingPage(),
+      CalendarPage(),
+      TasksPage(),
+      MessagesPage()
+    ];
     if (MediaQuery.of(context).size.width / MediaQuery.of(context).size.height >
         1) {
-      return landscapeScaffold(context);
+      return landscapeScaffold(context, pages);
     } else {
-      return portraitScaffold(context);
+      return portraitScaffold(context, pages);
     }
   }
 
-  Scaffold portraitScaffold(BuildContext context) {
+  Scaffold portraitScaffold(BuildContext context, List<Widget> pages) {
     var theme = Theme.of(context);
     return Scaffold(
-      bottomNavigationBar: navBar(
-        theme,
-        0,
-        selectedIndex,
-        (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        [
-          navBarItem(Icons.home, "Home", theme, 0),
-          navBarItem(Icons.calendar_today, "Calendar", theme, 0),
-          navBarItem(Icons.checklist, "Tasks", theme, 0),
-          navBarItem(Icons.contact_mail, "Messages", theme, 0)
-        ],
-      ),
-      body: page(selectedIndex),
-    );
+        bottomNavigationBar: navBar(
+          theme,
+          0,
+          selectedIndex,
+          (value) {
+            setState(() {
+              selectedIndex = value;
+            });
+          },
+          [
+            navBarItem(Icons.home, "Home", theme, 0),
+            navBarItem(Icons.calendar_today, "Calendar", theme, 0),
+            navBarItem(Icons.checklist, "Tasks", theme, 0),
+            navBarItem(Icons.contact_mail, "Messages", theme, 0)
+          ],
+        ),
+        body: IndexedStack(
+          index: selectedIndex,
+          children: pages,
+        ));
   }
 
-  Scaffold landscapeScaffold(BuildContext context) {
+  Scaffold landscapeScaffold(BuildContext context, List<Widget> pages) {
     var theme = Theme.of(context);
     return Scaffold(
       body: Row(
@@ -116,8 +104,10 @@ class _ReadySceneState extends State<ReadyScene> {
             ],
           )),
           Expanded(
-            child: page(selectedIndex),
-          ),
+              child: IndexedStack(
+            index: selectedIndex,
+            children: pages,
+          )),
         ],
       ),
     );
