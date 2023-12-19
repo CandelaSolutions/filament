@@ -1,67 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:filament/NavigationRail.dart';
 import 'package:filament/BottomNavigationBar.dart';
-import 'package:filament/LandingPage.dart';
-import 'package:filament/CalendarPage.dart';
-import 'package:filament/TasksPages/TasksMain.dart';
-import 'package:filament/MessagesPage.dart';
+import 'package:filament/TasksPages/TasksOverview.dart';
+import 'package:filament/TasksPages/TasksDaily.dart';
+import 'package:filament/TasksPages/TasksPersonal.dart';
+import 'package:filament/TasksPages/TasksWork.dart';
 
-void main() {
-  runApp(App());
-}
-
-class App extends StatelessWidget {
-  const App({super.key});
-
+class TasksPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AppState(),
-      child: MaterialApp(
-        title: 'Filament',
-        theme: ThemeData(
-            useMaterial3: true,
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: Colors.green.shade100)),
-        home: ReadyScene(),
-      ),
-    );
-  }
+  State<TasksPage> createState() => _TasksPageState();
 }
-
-class AppState extends ChangeNotifier {}
 
 Widget page(var selectedIndex) {
   Widget page;
   switch (selectedIndex) {
     case 0:
-      page = LandingPage();
+      page = TasksOverviewPage();
     case 1:
-      page = CalendarPage();
+      page = TasksDailyPage();
     case 2:
-      page = TasksPage();
+      page = TasksPersonalPage();
     case 3:
-      page = MessagesPage();
+      page = TasksWorkPage();
     default:
       throw UnimplementedError('no widget for $selectedIndex');
   }
   return page;
 }
 
-class ReadyScene extends StatefulWidget {
-  @override
-  State<ReadyScene> createState() => _ReadySceneState();
-}
-
-class _ReadySceneState extends State<ReadyScene> {
+class _TasksPageState extends State<TasksPage> {
   var selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final backgroundShade = theme.colorScheme.background;
-
     if (MediaQuery.of(context).size.width / MediaQuery.of(context).size.height >
         1) {
       return landscapeScaffold(context);
