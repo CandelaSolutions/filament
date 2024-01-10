@@ -1,5 +1,6 @@
 # Filament - A completely redesigned task manager
 
 ## Ideas List
-- [ ] Google Tasks Integration
-- [ ] Google Calendar Integration
+- [ ] Sub-task functuality
+- [ ] Reordering when tasks are complete
+- [ ] DateTime attributes for Tasks
