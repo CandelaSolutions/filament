@@ -25,6 +25,7 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
     return Scaffold(
       body: tasks.isNotEmpty
           ? ReorderableListView(
+              buildDefaultDragHandles: false,
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   if (newIndex > oldIndex) {
@@ -37,37 +38,27 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
               },
               children: [
                 for (int i = 0; i < tasks.length; i++)
-                  Row(
+                  CheckboxListTile(
                     key: ValueKey(tasks[i]),
-                    children: [
-                      Expanded(
-                        child: CheckboxListTile(
-                          value: tasks[i].state,
-                          onChanged: (bool? state) {
-                            setState(() {
-                              tasks[i].state = state!;
-                            });
-                            saveTasks();
-                          },
-                          title: Text(
-                              tasks[i].title == null ? "..." : tasks[i].title!),
-                          secondary: Text(tasks[i].subTasks == null
-                              ? "0"
-                              : tasks[i].subTasks!.length.toString()),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      SizedBox(
-                          width: 40.0,
-                          height: 40.0,
-                          child: IconButton(
+                    value: tasks[i].state,
+                    onChanged: (bool? state) {
+                      setState(() {
+                        tasks[i].state = state!;
+                      });
+                      saveTasks();
+                    },
+                    title:
+                        Text(tasks[i].title == null ? "..." : tasks[i].title!),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    secondary: SizedBox(
+                      width: 109,
+                      child: Row(
+                        children: [
+                          IconButton(
                             onPressed: () {},
                             icon: Icon(Icons.more_vert),
-                          )),
-                      SizedBox(
-                          width: 40.0,
-                          height: 40.0,
-                          child: IconButton(
+                          ),
+                          IconButton(
                             onPressed: () {
                               setState(() {
                                 tasks.removeAt(i);
@@ -75,9 +66,18 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
                               saveTasks();
                             },
                             icon: Icon(Icons.delete),
-                          )),
-                      SizedBox(width: 40.0),
-                    ],
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          ReorderableDragStartListener(
+                            index: i,
+                            child: const Icon(Icons.drag_handle),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                    ),
                   ),
               ],
             )

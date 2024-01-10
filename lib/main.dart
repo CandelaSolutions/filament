@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:filament/TasksPages/TasksOverview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,29 +49,34 @@ class App extends StatelessWidget {
                 ])),
             child: Column(
               children: [
-                WindowTitleBarBox(
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: MoveWindow(
-                              child: Row(
-                        children: [
-                          SizedBox(
-                            width: 30,
-                            child: Icon(Icons.emoji_objects),
-                          ),
-                          Text("Filament",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  fontSize: 14,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.normal))
-                        ],
-                      ))),
-                      WindowButtons()
-                    ],
+                if (Platform.isWindows)
+                  WindowTitleBarBox(
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: MoveWindow(
+                                child: Row(
+                          children: [
+                            SizedBox(
+                              width: 30,
+                              child: Icon(Icons.emoji_objects_outlined),
+                            ),
+                            Text("Filament",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    fontSize: 14,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal))
+                          ],
+                        ))),
+                        WindowButtons()
+                      ],
+                    ),
                   ),
-                ),
+                if (Platform.isAndroid)
+                  SizedBox(
+                    height: 38,
+                  ),
                 Expanded(child: TasksOverviewPage()),
               ],
             ),
