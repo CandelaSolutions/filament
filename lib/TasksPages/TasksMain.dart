@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:filament/NavigationRail.dart';
-import 'package:filament/BottomNavigationBar.dart';
+import 'package:filament/Classes/NavigationRail.dart';
+import 'package:filament/Classes/BottomNavigationBar.dart';
 import 'package:filament/TasksPages/TasksOverview.dart';
 import 'package:filament/TasksPages/TasksDaily.dart';
 import 'package:filament/TasksPages/TasksPersonal.dart';
@@ -13,7 +13,7 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage> {
   var selectedIndex = 0;
-
+  bool landscape = false;
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
@@ -22,68 +22,68 @@ class _TasksPageState extends State<TasksPage> {
       TasksPersonalPage(),
       TasksWorkPage(),
     ];
+
+    var theme = Theme.of(context);
+
     if (MediaQuery.of(context).size.width / MediaQuery.of(context).size.height >
         1) {
-      return landscapeScaffold(context, pages);
+      landscape = false;
     } else {
-      return portraitScaffold(context, pages);
+      landscape = true;
     }
-  }
 
-  Scaffold portraitScaffold(BuildContext context, List<Widget> pages) {
-    var theme = Theme.of(context);
     return Scaffold(
-        bottomNavigationBar: navBar(
-          theme,
-          1,
-          selectedIndex,
-          (value) {
-            setState(() {
-              selectedIndex = value;
-            });
-          },
-          [
-            navBarItem(Icons.checklist, "Overview", theme, 1),
-            navBarItem(Icons.event_repeat, "Habit Builder", theme, 1),
-            navBarItem(Icons.people, "Personal", theme, 1),
-            navBarItem(Icons.engineering, "Work", theme, 1)
+        bottomNavigationBar: taskNavBar(theme, landscape),
+        body: Row(
+          children: [
+            if (!landscape) SafeArea(child: taskNavRail(theme)),
+            Expanded(
+                child: IndexedStack(
+              index: selectedIndex,
+              children: pages,
+            )),
           ],
-        ),
-        body: IndexedStack(
-          index: selectedIndex,
-          children: pages,
         ));
   }
 
-  Scaffold landscapeScaffold(BuildContext context, List<Widget> pages) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      body: Row(
-        children: [
-          SafeArea(
-              child: navRail(
-            theme,
-            1,
-            selectedIndex,
-            (value) {
-              setState(() {
-                selectedIndex = value;
-              });
-            },
-            [
-              railDestination(Icons.checklist, "Overview", theme, 1),
-              railDestination(Icons.event_repeat, "Habit Builder", theme, 1),
-              railDestination(Icons.people, "Personal", theme, 1),
-              railDestination(Icons.engineering, "Work", theme, 1),
-            ],
-          )),
-          Expanded(
-              child: IndexedStack(
-            index: selectedIndex,
-            children: pages,
-          )),
+  BottomNavigationBar? taskNavBar(ThemeData theme, bool landscape) {
+    if (landscape) {
+      return navBar(
+        theme,
+        1,
+        selectedIndex,
+        (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+        },
+        [
+          navBarItem(Icons.checklist, "Overview", theme, 1),
+          navBarItem(Icons.event_repeat, "Habit Builder", theme, 1),
+          navBarItem(Icons.people, "Personal", theme, 1),
+          navBarItem(Icons.engineering, "Work", theme, 1)
         ],
-      ),
+      );
+    }
+    return null;
+  }
+
+  NavigationRail taskNavRail(ThemeData theme) {
+    return navRail(
+      theme,
+      1,
+      selectedIndex,
+      (value) {
+        setState(() {
+          selectedIndex = value;
+        });
+      },
+      [
+        railDestination(Icons.checklist, "Overview", theme, 1),
+        railDestination(Icons.event_repeat, "Habit Builder", theme, 1),
+        railDestination(Icons.people, "Personal", theme, 1),
+        railDestination(Icons.engineering, "Work", theme, 1),
+      ],
     );
   }
 }

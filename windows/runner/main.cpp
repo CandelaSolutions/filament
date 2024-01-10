@@ -1,3 +1,6 @@
+#include "../../../../../AppData/Local/Pub/Cache/hosted/pub.dev/bitsdojo_window_windows-0.1.6/windows/include/bitsdojo_window_windows/bitsdojo_window_plugin.h"
+auto bdw = bitsdojo_window_configure(BDW_CUSTOM_FRAME);
+
 #include <flutter/dart_project.h>
 #include <flutter/flutter_view_controller.h>
 #include <windows.h>
