@@ -1,5 +1,6 @@
 import 'package:filament/Classes/Task.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 List<Task> tasks = [];
 
@@ -25,7 +26,6 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
     return Scaffold(
       body: tasks.isNotEmpty
           ? ReorderableListView(
-              buildDefaultDragHandles: false,
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   if (newIndex > oldIndex) {
@@ -51,12 +51,12 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
                         Text(tasks[i].title == null ? "..." : tasks[i].title!),
                     controlAffinity: ListTileControlAffinity.leading,
                     secondary: SizedBox(
-                      width: 109,
+                      width: 95,
                       child: Row(
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.more_vert),
+                            icon: Icon(Icons.mode),
                           ),
                           IconButton(
                             onPressed: () {
@@ -66,13 +66,6 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
                               saveTasks();
                             },
                             icon: Icon(Icons.delete),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          ReorderableDragStartListener(
-                            index: i,
-                            child: const Icon(Icons.drag_handle),
                           ),
                           Spacer()
                         ],
