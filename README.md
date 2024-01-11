@@ -4,3 +4,4 @@
 - [ ] Sub-task functuality
 - [ ] Reordering when tasks are complete
 - [ ] DateTime attributes for Tasks
+- [ ] Sort Tasks by DateTime attributes
