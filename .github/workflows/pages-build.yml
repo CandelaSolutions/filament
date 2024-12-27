@@ -44,9 +44,9 @@ jobs:
       # Git
       - name: Commit
         run: |
-          git remote set-url origin https://${{secrets.JDHINDS_ACCESS_TOKEN}}@github.com/CandelaSolutions/filament.git
           git config --local user.email "jude.hinds@gmail.com"
           git config --local user.name "JDHinds"
+          git remote add origin https://${{secrets.JDHINDS_ACCESS_TOKEN}}@github.com/CandelaSolutions/filament.git
           git add .
           git commit -m "Build Commit"
       - name: Push
