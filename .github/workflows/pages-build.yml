@@ -44,15 +44,14 @@ jobs:
       # Git
       - name: Commit
         run: |
+          git remote set-url origin https://${{secrets.JDHINDS_ACCESS_TOKEN}}@github.com/CandelaSolutions/filament.git
           git config --local user.email "jude.hinds@gmail.com"
           git config --local user.name "JDHinds"
           git add .
           git commit -m "Build Commit"
       - name: Push
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.JDHINDS_ACCESS_TOKEN }}
-          branch: main
+        run: git push origin
+          
       
       # Pages
       - name: Setup Pages
