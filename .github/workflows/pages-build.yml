@@ -23,12 +23,12 @@ concurrency:
 jobs:
   # Build job
   build:
-    env:
-      my_secret: ${{secrets.JDHINDS_ACCESS_TOKEN}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{secrets.JDHINDS_ACCESS_TOKEN}}
 
       # Flutter
       - name: Set Up Flutter
@@ -46,7 +46,6 @@ jobs:
         run: |
           git config --local user.email "jude.hinds@gmail.com"
           git config --local user.name "JDHinds"
-          git remote add origin https://${{secrets.JDHINDS_ACCESS_TOKEN}}@github.com/CandelaSolutions/filament.git
           git add .
           git commit -m "Build Commit"
       - name: Push
