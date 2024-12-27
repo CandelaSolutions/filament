@@ -7,8 +7,6 @@ class Task {
   String? description;
   bool state;
   List<String>? tags;
-  List<Task>? subTasks;
-  DateTime? startBy;
   DateTime? dueBy;
 
   Task(
@@ -16,8 +14,6 @@ class Task {
       this.description,
       this.state = false,
       this.tags,
-      this.subTasks,
-      this.startBy,
       this.dueBy});
 
   Task.fromJson(Map<String, dynamic> json)
@@ -25,8 +21,6 @@ class Task {
         description = json['description'] as String?,
         state = json['state'] as bool? ?? false,
         tags = json['tags'] as List<String>?,
-        subTasks = json['subTasks'] as List<Task>?,
-        startBy = json['startBy'] as DateTime?,
         dueBy = json['dueBy'] as DateTime?;
 
   static Map<String, dynamic> toJson(Task value) => {
@@ -34,8 +28,6 @@ class Task {
         'description': value.description,
         'state': value.state,
         'tags': value.tags,
-        'subTasks': listToString(value.subTasks),
-        'startBy': value.startBy,
         'dueBy': value.dueBy,
       };
 
@@ -80,5 +72,9 @@ Future<String> get _localPath async {
 
 Future<File> get _localFile async {
   final path = await _localPath;
-  return File('$path/tasks.json');
+  final file = File('$path\\CandelaSolutions\\Filament\\Tasks.json');
+  if (!file.existsSync()) {
+    file.create(recursive: true);
+  }
+  return file;
 }

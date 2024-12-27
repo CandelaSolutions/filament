@@ -5,14 +5,14 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onBackground,
+      color: theme.colorScheme.onSurface,
     );
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Howdy", style: style),
+          Text("Landning Page", style: style),
         ],
       ),
     );

@@ -27,7 +27,7 @@ NavigationRail navRail(
 NavigationRailDestination railDestination(
     IconData iconData, String name, final theme, final hierachry) {
   dynamic primaryShade;
-  if (hierachry == 0) {
+  if (hierachry%2 == 0) {
     primaryShade = theme.colorScheme.primary;
   } else {
     primaryShade = theme.colorScheme.secondary;

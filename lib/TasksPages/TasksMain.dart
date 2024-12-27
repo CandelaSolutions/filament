@@ -3,8 +3,6 @@ import 'package:filament/Classes/NavigationRail.dart';
 import 'package:filament/Classes/BottomNavigationBar.dart';
 import 'package:filament/TasksPages/TasksOverview.dart';
 import 'package:filament/TasksPages/TasksDaily.dart';
-import 'package:filament/TasksPages/TasksPersonal.dart';
-import 'package:filament/TasksPages/TasksWork.dart';
 
 class TasksPage extends StatefulWidget {
   @override
@@ -19,8 +17,6 @@ class _TasksPageState extends State<TasksPage> {
     List<Widget> pages = [
       TasksOverviewPage(),
       TasksDailyPage(),
-      TasksPersonalPage(),
-      TasksWorkPage(),
     ];
 
     var theme = Theme.of(context);
@@ -58,10 +54,8 @@ class _TasksPageState extends State<TasksPage> {
           });
         },
         [
-          navBarItem(Icons.checklist, "Overview", theme, 1),
+          navBarItem(Icons.checklist, "Tasks", theme, 1),
           navBarItem(Icons.event_repeat, "Habit Builder", theme, 1),
-          navBarItem(Icons.people, "Personal", theme, 1),
-          navBarItem(Icons.engineering, "Work", theme, 1)
         ],
       );
     }
@@ -79,10 +73,8 @@ class _TasksPageState extends State<TasksPage> {
         });
       },
       [
-        railDestination(Icons.checklist, "Overview", theme, 1),
+        railDestination(Icons.checklist, "Tasks", theme, 1),
         railDestination(Icons.event_repeat, "Habit Builder", theme, 1),
-        railDestination(Icons.people, "Personal", theme, 1),
-        railDestination(Icons.engineering, "Work", theme, 1),
       ],
     );
   }

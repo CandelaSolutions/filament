@@ -5,7 +5,7 @@ class TasksDailyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onBackground,
+      color: theme.colorScheme.onSurface,
     );
 
     return Center(

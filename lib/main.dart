@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:filament/TasksPages/TasksOverview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
@@ -10,7 +11,6 @@ import 'package:filament/Classes/BottomNavigationBar.dart';
 import 'package:filament/LandingPage.dart';
 import 'package:filament/CalendarPage.dart';
 import 'package:filament/TasksPages/TasksMain.dart';
-import 'package:filament/MessagesPage.dart';
 
 void main() {
   runApp(App());
@@ -49,7 +49,11 @@ class App extends StatelessWidget {
                 ])),
             child: Column(
               children: [
-                if (Platform.isWindows)
+                if (kIsWeb)
+                  SizedBox(
+                    height: 4,
+                  )
+                else if (Platform.isWindows)
                   WindowTitleBarBox(
                     child: Row(
                       children: [
@@ -72,10 +76,10 @@ class App extends StatelessWidget {
                         WindowButtons()
                       ],
                     ),
-                  ),
-                if (Platform.isAndroid)
+                  )
+                else if (Platform.isAndroid)
                   SizedBox(
-                    height: 38,
+                    height: MediaQuery.of(context).viewPadding.top,
                   ),
                 Expanded(child: TasksOverviewPage()),
               ],
@@ -125,7 +129,6 @@ class _ReadySceneState extends State<ReadyScene> {
       LandingPage(),
       CalendarPage(),
       TasksPage(),
-      MessagesPage()
     ];
 
     var theme = Theme.of(context);
@@ -165,13 +168,15 @@ class _ReadySceneState extends State<ReadyScene> {
         railDestination(Icons.home, "Home", theme, 0),
         railDestination(Icons.calendar_today, "Calendar", theme, 0),
         railDestination(Icons.checklist, "Tasks", theme, 0),
-        railDestination(Icons.contact_mail, "Messages", theme, 0)
       ],
     );
   }
 
   BottomNavigationBar? mainNavBar(ThemeData theme, bool landscape) {
     if (landscape) {
+      if (selectedIndex == 4) {
+        selectedIndex = 0;
+      }
       return navBar(
         theme,
         0,
@@ -185,7 +190,6 @@ class _ReadySceneState extends State<ReadyScene> {
           navBarItem(Icons.home, "Home", theme, 0),
           navBarItem(Icons.calendar_today, "Calendar", theme, 0),
           navBarItem(Icons.checklist, "Tasks", theme, 0),
-          navBarItem(Icons.contact_mail, "Messages", theme, 0)
         ],
       );
     }

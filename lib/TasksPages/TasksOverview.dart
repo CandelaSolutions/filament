@@ -1,6 +1,5 @@
 import 'package:filament/Classes/Task.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 List<Task> tasks = [];
 
@@ -47,8 +46,7 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
                       });
                       saveTasks();
                     },
-                    title:
-                        Text(tasks[i].title == null ? "..." : tasks[i].title!),
+                    title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(tasks[i].title == null ? "..." : tasks[i].title!), Text("Date", style: TextStyle(color: grey,),)]),
                     controlAffinity: ListTileControlAffinity.leading,
                     secondary: SizedBox(
                       width: 95,
