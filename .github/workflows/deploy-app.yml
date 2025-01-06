@@ -34,6 +34,10 @@ jobs:
           channel: 'stable'
       - name: Install Dependencies
         run: flutter pub get
+      - name: Update Dependencies
+        run: flutter pub upgrade
+      - name: Updating Launcher Icon
+        run: dart run flutter_launcher_icons
       - name: Build Web
         run: flutter build web --release
 

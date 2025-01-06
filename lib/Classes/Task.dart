@@ -1,6 +1,5 @@
-import 'dart.io';
 import 'dart:convert';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Task {
   String? title;
@@ -9,72 +8,58 @@ class Task {
   List<String>? tags;
   DateTime? dueBy;
 
-  Task(
-      {this.title,
-      this.description,
-      this.state = false,
-      this.tags,
-      this.dueBy});
+  Task({
+    this.title,
+    this.description,
+    this.state = false,
+    this.tags,
+    this.dueBy,
+  });
 
+  // Factory constructor to create a Task from JSON
   Task.fromJson(Map<String, dynamic> json)
       : title = json['title'] as String?,
         description = json['description'] as String?,
         state = json['state'] as bool? ?? false,
-        tags = json['tags'] as List<String>?,
-        dueBy = json['dueBy'] as DateTime?;
+        tags = (json['tags'] as List<dynamic>?)?.cast<String>(),
+        dueBy = json['dueBy'] != null
+            ? DateTime.parse(json['dueBy'] as String)
+            : null;
 
-  static Map<String, dynamic> toJson(Task value) => {
-        'title': value.title,
-        'description': value.description,
-        'state': value.state,
-        'tags': value.tags,
-        'dueBy': value.dueBy,
+  // Method to convert a Task to JSON
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'description': description,
+        'state': state,
+        'tags': tags,
+        'dueBy': dueBy?.toIso8601String(),
       };
 
-  static String? listToString(List<Task>? tasks) {
-    if (tasks == null) {
-      return null;
-    }
-    var jsonText = (tasks.map((task) => jsonEncode(Task.toJson(task))))
-        .toList()
-        .toString();
-    jsonText = jsonText.replaceAll("(", "[");
-    jsonText = jsonText.replaceAll(")", "]");
-    return jsonText;
+  // Converts a list of tasks to a JSON string
+  static String listToJson(List<Task> tasks) {
+    return jsonEncode(tasks.map((task) => task.toJson()).toList());
   }
 
-  static Future<File> saveTasks(List<Task> tasks) async {
-    final file = await _localFile;
-    var jsonText = listToString(tasks);
-    return file.writeAsString(jsonText as String, mode: FileMode.writeOnly);
+  // Converts a JSON string to a list of tasks
+  static List<Task> jsonToList(String jsonString) {
+    List<dynamic> jsonData = jsonDecode(jsonString);
+    return jsonData.map((item) => Task.fromJson(item)).toList();
   }
 
+  // Save a list of tasks to SharedPreferences
+  static Future<void> saveTasks(List<Task> tasks) async {
+    final prefs = await SharedPreferences.getInstance();
+    String jsonString = listToJson(tasks);
+    await prefs.setString('tasks', jsonString);
+  }
+
+  // Load a list of tasks from SharedPreferences
   static Future<List<Task>> loadTasks() async {
-    try {
-      final file = await _localFile;
-      final contents = await file.readAsString();
-      List<dynamic> jsonData = jsonDecode(contents);
-      List<Task> tasks = [];
-      for (int i = 0; i < jsonData.length; i++) {
-        tasks.add(Task.fromJson(jsonData[i] as Map<String, dynamic>));
-      }
-      return tasks;
-    } catch (e) {
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonString = prefs.getString('tasks');
+    if (jsonString == null || jsonString.isEmpty) {
       return [];
     }
+    return jsonToList(jsonString);
   }
-}
-
-Future<String> get _localPath async {
-  final directory = await getApplicationDocumentsDirectory();
-  return directory.path;
-}
-
-Future<File> get _localFile async {
-  final path = await _localPath;
-  final file = File('$path\\CandelaSolutions\\Filament\\Tasks.json');
-  if (!file.existsSync()) {
-    file.create(recursive: true);
-  }
-  return file;
 }
