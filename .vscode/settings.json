@@ -20,4 +20,5 @@
     },
     "peacock.color": "#e08600",
     "peacock.remoteColor": "#e08600",
+    "cmake.configureOnOpen": false
 }

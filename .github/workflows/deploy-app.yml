@@ -41,16 +41,6 @@ jobs:
       - name: Build Web
         run: flutter build web --release
 
-      # Git
-      - name: Commit
-        run: |
-          git config --local user.email "jude.hinds@gmail.com"
-          git config --local user.name "JDHinds"
-          git add .
-          git commit -m "Build Commit"
-      - name: Push
-        run: git push origin
-
       # Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
