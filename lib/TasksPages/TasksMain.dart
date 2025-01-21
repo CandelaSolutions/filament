@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:filament/Classes/NavigationRail.dart';
 import 'package:filament/Classes/BottomNavigationBar.dart';
 import 'package:filament/TasksPages/TasksOverview.dart';
-import 'package:filament/TasksPages/TasksDaily.dart';
+import 'package:filament/TasksPages/TasksRoutine.dart';
 
 class TasksPage extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       TasksOverviewPage(),
-      TasksDailyPage(),
+      TasksRoutinePage(),
     ];
 
     var theme = Theme.of(context);

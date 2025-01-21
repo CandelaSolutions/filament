@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TasksDailyPage extends StatelessWidget {
+class TasksRoutinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -12,7 +12,7 @@ class TasksDailyPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Build Habits", style: style),
+          Text("Recurring Tasks", style: style),
         ],
       ),
     );

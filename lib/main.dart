@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:filament/TasksPages/TasksOverview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +80,7 @@ class App extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).viewPadding.top,
                   ),
-                Expanded(child: TasksOverviewPage()),
+                Expanded(child: ReadyScene()),
               ],
             ),
           )),

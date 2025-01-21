@@ -57,7 +57,7 @@ class Task {
   static Future<List<Task>> loadTasks() async {
     final prefs = await SharedPreferences.getInstance();
     String? jsonString = prefs.getString('tasks');
-    if (jsonString == null || jsonString.isEmpty) {
+    if (jsonString!.isEmpty) {
       return [];
     }
     return jsonToList(jsonString);
