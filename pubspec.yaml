@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  candela_standards:
+    git:
+      url: https://github.com/CandelaSolutions/candela_standards.git
   provider: ^6.1.2
   bitsdojo_window: ^0.1.6
   shared_preferences: ^2.3.5
