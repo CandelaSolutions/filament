@@ -1,52 +1,53 @@
+import 'package:filament/Classes/Project.dart';
 import 'package:filament/Classes/Task.dart';
 import 'package:flutter/material.dart';
 
-List<Task> tasks = [];
+List<Project> projects = [];
 
 bool addingTask = false;
 final controller = TextEditingController();
 
-class TasksOverviewPage extends StatefulWidget {
+class TasksPage extends StatefulWidget {
   @override
-  State<TasksOverviewPage> createState() => _TasksOverviewPageState();
+  State<TasksPage> createState() => _TasksPageState();
 }
 
-class _TasksOverviewPageState extends State<TasksOverviewPage> {
+class _TasksPageState extends State<TasksPage> {
   var actionIcon = Icons.add;
   var grey = Color.fromARGB(255, 128, 128, 128);
   @override
   void initState() {
-    loadTasks();
+    loadProjects();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: tasks.isNotEmpty
+      body: projects[0].tasks.isNotEmpty
           ? ReorderableListView(
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   if (newIndex > oldIndex) {
                     newIndex -= 1;
                   }
-                  final item = tasks.removeAt(oldIndex);
-                  tasks.insert(newIndex, item);
-                  saveTasks();
+                  final item = projects[0].tasks.removeAt(oldIndex);
+                  projects[0].tasks.insert(newIndex, item);
+                  saveProjects();
                 });
               },
               children: [
-                for (int i = 0; i < tasks.length; i++)
+                for (int i = 0; i < projects[0].tasks.length; i++)
                   CheckboxListTile(
-                    key: ValueKey(tasks[i]),
-                    value: tasks[i].state,
+                    key: ValueKey(projects[0].tasks[i]),
+                    value: projects[0].tasks[i].done,
                     onChanged: (bool? state) {
                       setState(() {
-                        tasks[i].state = state!;
+                        projects[0].tasks[i].done = state!;
                       });
-                      saveTasks();
+                      saveProjects();
                     },
-                    title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(tasks[i].title == null ? "..." : tasks[i].title!), Text("Date", style: TextStyle(color: grey,),)]),
+                    title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(projects[0].tasks[i].name == null ? "..." : projects[0].tasks[i].name!), Text("Date", style: TextStyle(color: grey,),)]),
                     controlAffinity: ListTileControlAffinity.leading,
                     secondary: SizedBox(
                       width: 95,
@@ -59,9 +60,9 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                tasks.removeAt(i);
+                                projects[0].tasks.removeAt(i);
                               });
-                              saveTasks();
+                              saveProjects();
                             },
                             icon: Icon(Icons.delete),
                           ),
@@ -123,7 +124,7 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
       if (addingTask) {
         var task = controller.text;
         if (task.isNotEmpty) {
-          tasks.add(Task(title: task));
+          projects[0].tasks.add(Task(name: task));
         }
         actionIcon = Icons.add;
       } else {
@@ -132,17 +133,20 @@ class _TasksOverviewPageState extends State<TasksOverviewPage> {
       }
       addingTask = !addingTask;
     });
-    saveTasks();
+    saveProjects();
   }
 
-  void saveTasks() {
-    Task.saveTasks(tasks);
+  void saveProjects() {
+    Project.saveProjects(projects);
   }
 
-  void loadTasks() {
-    Task.loadTasks().then((List<Task> result) {
+  void loadProjects() {
+    Project.loadProjects().then((List<Project> result) {
       setState(() {
-        tasks += result;
+        projects += result;
+        if (projects.isEmpty || result.runtimeType == Null) {
+          projects.add(Project(name: "Sample", tasks: []));
+        }
       });
     });
   }

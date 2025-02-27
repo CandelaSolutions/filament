@@ -1,4 +1,4 @@
-import 'package:filament/Widgets/timer.dart';
+import 'package:filament/Widgets/Timer.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {

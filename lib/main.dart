@@ -1,17 +1,18 @@
-import 'package:candela_standards/candela_standards.dart';
+import 'package:candela_standards/candela_standard_app.dart';
+import 'package:candela_standards/candela_standard_app_profile_prefabs.dart';
+import 'package:filament/TasksPage.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
-import 'package:filament/Classes/NavigationRail.dart';
-import 'package:filament/Classes/BottomNavigationBar.dart';
+import 'package:filament/Widgets/NavigationRail.dart';
+import 'package:filament/Widgets/BottomNavigationBar.dart';
 import 'package:filament/LandingPage.dart';
 import 'package:filament/CalendarPage.dart';
-import 'package:filament/TasksPages/TasksMain.dart';
 
 void main() {
   runApp(App());
   doWhenWindowReady(() {
-    appWindow.title = "Filament";
+    appWindow.title = filament.text;
     appWindow.show();
   });
 }
@@ -21,11 +22,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CandelaStandardApp(
-      icon: Icon(Icons.emoji_objects_outlined),
-      text: "Filament",
-      primary: Color.fromARGB(255, 224, 134, 0),
-      secondary: Color.fromARGB(255, 239, 191, 56),
+    return CandelaStandardAppWindow(
+      profile: filament,
       child: ReadyScene(),
     );
   }
